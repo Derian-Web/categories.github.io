@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <style>
+        input[type=text]{
+            width: 80%;
+        }
+        </style>
+</head>
+
+<body>
+    <div id="app" class="container mt-5">
+        <div class="row">
+            <div class="col-md-4 mt-3" v-for="(list, index) in lists" :key="index">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="d-flex justify-content-between">
+                            <h4>{{ list.name }}</h4>
+                            <button :class="list.status == 'creating' ? 'btn-warning' : 'btn-danger'" class="btn btn-sm" @click="removeList(index)">
+                                {{ list.status == 'creating' ? 'Cancelar' : 'Eleminar' }}
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <form @submit.prevent="saveList(list)"  action="/">
+                            <div class="form-group" v-if="list.status == 'creating'">
+                                <input v-model="list.name" class="form-control" placeholder="Nombre de la lista">
+                            </div>
+                            <button v-if="list.status == 'creating'" class="btn btn-primary btn-block">
+                                Guardar
+                            </button>
+                            <!--Agregamos tarjeta-->
+                            <div class="form-group d-flex  justify-content-between" v-for="card in list.cards">
+                                <input 
+                                class="form-control"
+                                placeholder="descripcion de la tarjeta"
+                                v-model="card.title"
+                                
+                                >
+                                <!-- :readonly="indexCard != list.cards.length - 1" -->
+                                <div class="d-flex">
+                                    <div>
+                                    <button class="btn btn-danger" @click="eliminar(index)">X</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <button
+                            v-if="list.status == 'saved'"
+                            class="btn btn-success btn-block"
+                            @click="addCard(list)"
+                            >
+                            Agregar tarjeta
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mt-3">
+                <button class="btn rounded-0 btn-outline-dark btn-block" @click="addList">
+                    Agregar lista
+                </button>
+            </div>
+        </div>
+    </div>
+    <!-- development version, includes helpful console warnings -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="./js/javascript.js"></script>
+</body>
+
+</html>
